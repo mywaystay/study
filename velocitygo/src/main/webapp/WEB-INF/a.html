@@ -1,0 +1,39 @@
+<html>
+<head>
+<script type="text/javascript" src="/liclgo/js/jquery-1.9.1.min.js"></script>
+<script type="text/javascript" src="/liclgo/js/jquery.form.js"></script>
+</head>
+<div id="div">
+#if($b)
+true
+#else
+false
+#end
+</br>
+$teacher.id    **(**)**   $teacher.name
+</br>
+${teacher}name
+</br>
+$!abc  ***$abc
+</br>
+#set($var=1)
+#foreach( $teacher  in $list)
+teacher num : $var
+</br>
+teacher id :  $teacher.id 
+</br>
+teacher name :$teacher.name
+</br>
+teacher age :$!teacher.age  
+</br>
+#set($var=$var+1)
+#end
+#foreach( $student  in $list2)
+student id :  $student.id 
+</br>
+student name :$student.name
+</br>
+#end
+</br>
+</div>
+</html>

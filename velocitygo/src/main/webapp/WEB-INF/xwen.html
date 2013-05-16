@@ -1,0 +1,162 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!DOCTYPE html PUBLIC "-//WAPFORUM//DTD XHTML Mobile 1.0//EN" "http://www.wapforum.org/DTD/xhtml-mobile10.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml">
+<head>
+    <meta http-equiv="Content-Type" content="application/vnd.wap.xhtml+xml;charset=utf-8"/>
+    <title>${title}_手机网易网</title>
+    <style type="text/css">
+        body{margin:2px 6px;padding:0;line-height:150%;background:#f8fcff}
+        a{color:#00f;text-decoration:underline}
+        a:visited{color:#83006f;text-decoration:underline}
+        a:hover{color:#c00;}
+        .cBlue,a.cBlue,.cBlue:visited,.cBlue a{color:#00f}
+        .cRed,a.cRed,.cRed:visited,.cRed a{color:#f00}
+        .cGray,a.cGray,.cGray:visited,.cGray a{color:#444}
+        .lBlue a,.lBlue a:visited{color:#00f}
+        .cBlue a:hover,a.cBlue:hover,.lBlue a:hover,.cGray:hover,.cGray a:hover{color:#c00}
+        .cRed a:hover,a.cRed:hover{color:#000}
+        .tCenter{text-align:center}
+        .tRight{text-align:right}
+        .reset{margin:0;padding:0;list-style:none}
+        .marTop6{margin-top:6px}
+        .marTop10{margin-top:10px}
+        .marTop12{margin-top:12px}
+        .title{background:#384ea3;color:#fff;padding:3px 6px}
+        .atitle{background:#bfd7fb;padding:3px 0}
+        .comment p{margin:0;padding:3px 0 0;clear:both}
+        .comment .review{border-bottom:1px dashed #999;padding-bottom:6px}
+        .comment .review .data{width:100%;font-size:12px}
+        .comment .review .data .name{float:left;color:#1f3a87}
+        .comment .review .data .time{float:right;color:#666}
+        .comment .commentBox{clear:both;background:#ffe; border:1px solid #999; padding:2px}
+        .comment .commentBox .forCite{ font-size:12px; display:block; padding-top:6px; line-height:120%; color:#1f3a87}
+        .comment .commentBox .forCite .pic{ float:left; margin:2px 2px 0 1px;}
+        .comment .review .function{width:100%;text-align:right; font-size:12px;}.comment .commentBox2{clear:both;background:#ffe; margin-top:3px; border-right:1px solid #999; border-bottom:1px solid #999; border-left:1px solid #999; padding:0 2px 2px}
+        .backTop{text-align:center;margin-bottom:6px;}
+        img { border:none; }
+        .bannerTop{ margin:0 5px 3px; padding:1px;}
+    </style>
+    <style type="text/css">
+        body{ line-height:140%;}
+        .content p{ margin:7px 0;}
+        .cGreen,.cGreen:visited,.cGreen a{color:#008000;}
+        .cBlack,.cBlack:visited,.cBlack a{color:#000000;}
+    </style>
+</head>
+<body>
+<div class="position lBlue"><a name="top" id="top"></a><a href="http://3g.163.com/x/">网易</a>&gt;#if ($cnavbar!="")$cnavbar#end&gt;正文</div>
+<!-- bannerTop Ad -->
+<!-- 触屏首页ID 00340BC8 -->
+<!-- 触屏文章ID 00340BC9 -->
+<!-- 高级首页ID 00340BC3 -->
+<!-- 高级文章ID 00340BC4 -->
+#set($list=$tag.getRndList("topicid=00340BC4;pointstart=70;pointmid=80;pointend=90;titlelength=14;getnum=3;listnum=1;"))
+#if($list)
+<div class="bannerTop" id="licl">
+     #foreach($one in $list)
+      <a href="${one.url}">
+         <img src="${one.imgsrc}" alt="${one.title}" title="${one.title}" width="210" height="110"/>
+      </a>
+     #end
+</div>
+#end
+<!-- bannerTop Ad end -->
+<!-- $tools.ParseTime($tools.getTime(),"Y-M-D h:m:s") -->
+<div class=" marTop6 atitle tCenter">$title</div>
+<div class="about">
+    #if($isremain!="true"&&$isall!="true"&&$pagecounts>1&&$curpage>1)
+    第$curpage页 共$pagecounts页<br />
+    (...接上文)<br />
+    #elseif($isremain=="true"||$isall=="true"&&$curpage!="1")
+    (...接上文)<br />
+    #else
+    $data.get("ptime").substring(0,19)<br/>
+    #if ($data.get("source")!="")来源:$data.get("source")#if ($data.get("source_city")!="")($data.get("source_city"))#end#end<br/>
+    #if ($iscomment=="y")
+    <a href="$commenturl" class="cBlue">网友评论${tools.commentCount($data.get("boardid"),$data.get("postid"))}条</a><br/>
+    #end
+    #end
+    #if ($splitpages)
+    #set ($pageconuts = 0)
+    #foreach ($a in $splitpages)
+    #set ($pageconuts = $pageconuts+1)
+    #end#end
+    #if ($isall!="true" && $curpage==1 && $pagecounts>1)<a href="$allpage" class="cBlue">查看全文</a>(共$pagecounts页)#end
+</div>
+
+$articleAd
+
+<div><img src="http://analytics.163.com/ntes?_ntit=3g_articles_x&amp;_nacc=wap&amp;_nvid=VISITOR_CLIENT_NO_COOKIE_SUPPORT&amp;_t=$tools.ParseTime($tools.getTime(),"hms")&amp;_nurl=$biurl&amp;_end" width="6" height="1" alt="" /></div>
+
+<div class="content">
+    $body
+    #if ($tools.find($channelcommend,"Thisisenserecommend")>0)<p><a href="http://3g.163.com/bbs/bbs_lady/list/lovestory.html">进论坛分享你的爱情</a><br/><a href="http://3g.163.com/sense/">看更多情爱故事</a></p> #end
+</div>
+#if($isremain!="true"&&$isall!="true"&&$pagecounts>1)
+<div class="reset marTop10 cBlue">
+    #if ($curpage!=$pagecounts)<a href="$nextpage">下页</a>　#end
+    #if ($curpage+1<$pagecounts)<a href="$remainpage">余下全文</a>　#end
+    #if ($curpage!=1)<a href="$prepage">上页</a>#end
+</div>
+<div>第$curpage页 共$pagecounts页
+    <form action="/post/jumppage.jsp" method="get" class="reset" accept-charset="UTF-8">
+        <div><input type="hidden" name="url" value="$url"/>
+            到 <input type="text" name="jumppage" style="width:14px" size="2"/> 页 <input type="submit" value="跳转"/>
+        </div>
+    </form>
+</div>
+#end
+
+<!--微博-->
+#set($wap_content="手机网易网: ${title}")
+<div style="margin:2px -2px -10px 0px">分享到<span><img alt="v" src="http://img1.cache.netease.com/cnews/css09/wblog.gif"/><a href="http://3g.163.com/t/checkLogin.do?info=$tools.encode(${title},"UTF-8")&amp;source=$tools.encode('手机网易网',"UTF-8")&amp;link=$tools.encode($biurl.replace("%3A",":").replace("3g.163.com/x/","3g.163.com/"),"UTF-8")&amp;mobilewbco=nb_sjwyw_wzy_p4_%E5%88%86%E4%BA%AB%E5%88%B0%E7%BD%91%E6%98%93%E5%BE%AE%E5%8D%9A">网易微博</a></span><span><img alt="v" src="http://img3.cache.netease.com/3g/transparent.png"/><a href="http://weibo.cn/dpool/ttt/share.php?rt=$tools.encode(${wap_content},"UTF-8")&amp;ru=$tools.encode($biurl.replace("%3A",":").replace("3g.163.com/x/","3g.163.com/"),"UTF-8")&amp;st=$tools.getTimestamp()&amp;wm=4326">新浪微博</a></span><br/></div>
+
+#if ($iscomment=="y")
+<!--#include virtual="/comment/$data.get("boardid")/${data.get("postid")}.html"-->
+#else
+<span>【该评论已关闭】</span><br/>
+#end
+<div class="position lBlue"><a href="http://3g.163.com/x/">网易</a>&gt;#if ($cnavbar!="")$cnavbar#end&gt;正文</div>
+#if ($channelcommend)
+<div class="list marTop12">
+    $channelcommend
+    #set($list=$tag.getList("topicid=00340AMT;pointstart=70;pointend=100;titlelength=24;listnum=1;"))
+    #if($list)
+    #foreach($one in $list)
+    <br/><a href="[链接]">[标题]</a>
+    #end
+    #end
+</div>
+#end
+<div class="list marTop12">
+    【热点关注】
+    $globalrecommend
+    #set($list=$tag.getList("topicid=00340AMU;pointstart=70;pointend=100;titlelength=24;listnum=1;"))
+    #if($list)
+    #foreach($one in $list)
+    <br/><a href="[链接]">[标题]</a>
+    #end
+    #end
+</div>
+<div class="list marTop12">
+    【精彩推荐】
+    $recommend
+</div>
+<div class="cnav marTop12 lBlue">$topicbar</div>
+<!--#include virtual="/ntes/special/003402FB/footer.html"-->
+
+<!--domob start-->
+<script type="text/javascript">
+    var domob_vars = {
+        pub_id: '56OJyRCYuMVLNpCtjp',
+        style : 'inline',
+        docks : ['domob_ad1'],
+        test_mode: false //在上线时，请修改此处的值为false
+    };
+</script>
+<script type="text/javascript" src="http://s.domob.cn/sdk/domobt.js"></script>
+<!--domob end-->
+
+
+</body>
+</html>

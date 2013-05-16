@@ -1,0 +1,36 @@
+<html>
+<head>
+<script type="text/javascript" src="/liclgo/js/jquery-1.9.1.min.js"></script>
+<script type="text/javascript" src="/liclgo/js/jquery.form.js"></script>
+<script type="text/javascript">
+$(function(){
+	$(".click").click(function(){
+		  $("#userId").val($(this).val());
+		  $('#form').ajaxSubmit(function(data){
+			  $("#div").html(data);
+          })
+	})
+})
+</script>
+</head>
+<form id="form" action="/liclgo/mahout/mahout.do">
+	<table>
+		<tr>
+			<th></th>
+			<#list listi as item>
+			<th>${item}</th>
+			</#list>
+		</tr>
+		<#list listp as person>
+		<tr>
+			<td><input type="button" value="${person}" class="click"/></td>
+		    <#list listi as item>
+			<td><input name="${person}_${item}" type="text" /></td>
+			</#list>
+		</tr>
+		</#list>
+	</table>
+	<input type="hidden" name="userId" value="" id="userId" />
+</form>
+<div id="div"></div>
+</html>

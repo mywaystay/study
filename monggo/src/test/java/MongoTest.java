@@ -218,6 +218,13 @@ public class MongoTest {
 		long end = System.currentTimeMillis();
 		log.info("time: " + (end - begin));
 	}
+	
+	@Test
+	public void testFindAll() {
+		long begin = System.currentTimeMillis();
+		List<Person> list = mongoOps.findAll(Person.class);
+		System.out.println(list.size());
+	}
 
 	//@Test
 	public void mapreduce() {

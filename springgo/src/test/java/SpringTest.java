@@ -26,6 +26,7 @@ public class SpringTest {
 
 	@Test
 	public void test1(){
+		System.out.println(System.getenv("PATH"));
 		System.out.println(stu.getId());
 		System.out.println(stu.getName());
 		System.out.println(stu2.getId());
