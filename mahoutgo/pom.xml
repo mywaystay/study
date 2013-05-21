@@ -61,14 +61,22 @@
 		</dependency>
 		<dependency>
 			<groupId>org.apache.mahout</groupId>
+			<artifactId>mahout-collections</artifactId>
+			<version>1.0</version>
+		</dependency>
+		<dependency>
+			<groupId>org.apache.mahout</groupId>
+			<artifactId>mahout-utils</artifactId>
+			<version>0.5</version>
+		</dependency>
+
+		<dependency>
+			<groupId>org.apache.mahout</groupId>
 			<artifactId>mahout-examples</artifactId>
-			<version>${mahout-version}</version>
 		</dependency>
 		<dependency>
 			<groupId>org.apache.mahout</groupId>
 			<artifactId>mahout-integration</artifactId>
-			<!-- <exclusions> <exclusion> <groupId>org.mongodb</groupId> <artifactId>bson</artifactId> 
-				</exclusion> </exclusions> -->
 		</dependency>
 	</dependencies>
 	<build>
