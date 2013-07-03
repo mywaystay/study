@@ -15,6 +15,13 @@ http://www.springframework.org/schema/context/spring-context.xsd
 	<bean id="freemarkerConfig"
 		class="org.springframework.web.servlet.view.freemarker.FreeMarkerConfigurer">
 	 <property name="templateLoaderPath" value="/WEB-INF/"/>
+	<property name="freemarkerSettings">
+			<props>
+				<prop key="template_update_delay">0</prop>
+				<prop key="defaultEncoding">UTF-8</prop>
+				<prop key="locale">zh_CN</prop>
+			</props>
+		</property>
 	</bean>
 
 	<bean id="viewResolver"
@@ -22,6 +29,7 @@ http://www.springframework.org/schema/context/spring-context.xsd
 		<property name="cache" value="true" />
 		<property name="prefix" value="" />
 		<property name="suffix" value=".html" />
+		<property name="contentType" value="text/html;charset=UTF-8"></property>
 	</bean>
 
 	<mvc:interceptors>

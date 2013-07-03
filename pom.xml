@@ -23,11 +23,11 @@
 				<activeByDefault>true</activeByDefault>
 			</activation>
 			<properties>
-				<mongoip>220.181.8.33</mongoip>
+				<mongoip>127.0.0.1</mongoip>
 			</properties>
 		</profile>
 	</profiles>
-	<!-- kdaQEobo abc1 -->
+	<!-- kdaQEobo abc12 da#@I*O( -->
 	<properties>
 		<spring-version>3.2.2.RELEASE</spring-version>
 		<mahout-version>0.7</mahout-version>
@@ -160,8 +160,23 @@
 			</dependency>
 		</dependencies>
 	</dependencyManagement>
-
 	<build>
+		<testResources>
+			<testResource>
+				<directory>src/test/resources</directory>
+				<includes>
+					<include>*.properties</include>
+				</includes>
+				<filtering>true</filtering>
+			</testResource>
+			<testResource>
+				<directory>src/test/resources</directory>
+				<excludes>
+					<exclude>*.properties</exclude>
+				</excludes>
+				<filtering>false</filtering>
+			</testResource>
+		</testResources>
 		<resources>
 			<resource>
 				<directory>src/main/resources</directory>

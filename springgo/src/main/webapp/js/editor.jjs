@@ -1,0 +1,607 @@
+var targetDoc;
+var target;
+public_description = new editor();
+function editor()
+{
+this.get_contents = GetContents;
+this.get_oritext = GetOritext;
+this.get_plaincontents = GetPlainContents;
+this.get_allplaincontents = GetAllPlainContents;
+this.put_contents = PutContents;
+}
+function reSize()
+{
+	var ParentFrame	    =	document.frames["targetx"].document.body;
+	var ContentFrame	=	document.getElementById("targetx");
+	var scroll_height = ParentFrame.scrollHeight + (ParentFrame.offsetHeight - ParentFrame.clientHeight);
+	if (scroll_height>250)
+	{
+		ContentFrame.style.height = scroll_height;
+	}
+}
+function Window_OnLoad() {
+var MenuItems = new Array(8);
+MenuItems[0] = "剪切";
+MenuItems[1] = "Docut('Cut')";
+MenuItems[2] = "复制";
+MenuItems[3] = "DoCopy";
+MenuItems[4] = "粘贴";
+MenuItems[5] = "DoPaste";
+MenuItems[6] = "全选";
+MenuItems[7] = "DoSelectAll";
+
+window.external.setContextMenu(MenuItems);
+}
+
+function copyText(textx) {
+	clipboardData.setData('Text',textx);
+}
+
+function DoCut() {
+target.document.execCommand("Cut", false, null);
+}
+
+function DoCopy() {
+target.document.execCommand("Copy", false, null);
+}
+
+function DoPaste() {
+target.document.execCommand("Paste", false, null);
+}
+function DoSelectAll() {
+target.document.execCommand("SelectAll", false, null);
+}
+
+function dosptype(opt)
+{
+if (opt!='')
+{
+var strHTML;
+edit =  target.document.selection.createRange();
+RangeType = target.document.selection.type;
+if (RangeType == "Text"){
+strHTML = "<" + opt + ">" + edit.text + "</" + opt + ">";
+edit.pasteHTML(strHTML);
+target.focus();
+edit.select();
+}
+}
+}
+
+function GetContents() {
+if (target.document.all["cdiv"]!=null) return target.document.all["cdiv"].innerHTML;
+else return target.document.body.innerHTML;
+}
+
+function GetOritext(){
+if (target.document.all["ori"]!=null) return target.document.all["ori"].innerText;
+else return null;
+}
+
+function GetPlainContents()
+{
+if (target.document.all["cdiv"]!=null) return target.document.all["cdiv"].innerText;
+else return target.document.body.innerText;
+}
+
+function GetAllPlainContents()
+{
+return target.document.body.innerText;
+}
+
+
+function PutContents(contents)
+{
+targetDoc.designMode = "On";
+if (target.document.all["cdiv"]!=null) target.document.all["cdiv"].innerHTML = contents;
+else target.document.body.innerHTML = contents;
+}
+
+function cleanHtml() {
+var fonts = target.document.body.all.tags("FONT");
+var curr;
+for (var i = fonts.length - 1; i >= 0; i--) {
+curr = fonts[i];
+if (curr.style.backgroundColor == "#ffffff") curr.outerHTML = curr.innerHTML;
+}
+}
+function code()
+{
+var cont;
+var contt = target.document.body.ddcode;
+	if (target.document.body.style.background=="#ffffff" || target.document.body.style.background=="")
+	{
+		target.document.body.style.background="#dddddd";
+		cleanHtml();
+		cleanHtml();
+		cont=target.document.body.innerHTML;
+		cont = formatCode(cont);
+		target.document.body.innerHTML=cont;
+		target.focus();
+	}
+}
+
+function design() 
+{
+var cont;
+var contt = target.document.body.ddcode;
+if (target.document.body.style.background=="#dddddd")
+{
+	target.document.body.style.background="#ffffff";
+	cont=target.document.body.innerText;
+//alert("design: " + target.document.body.innerHTML);
+	target.document.body.innerHTML=cont.replace(/\r\n/ig,'');
+//alert("cont: " + cont.replace(/\r\n/ig,''));
+//alert("design: " + target.document.body.innerHTML);
+	target.focus();
+}
+}
+
+function formatCode(code)
+{
+	code = code.replace(/(<)/ig,'&lt;');
+	code = code.replace(/(>)/ig,'&gt;');
+	//code = code.replace(/(\"[^\"]*\")/ig,'&quot;')
+	code = code.replace(/(&lt;)/ig,'<br>$1');
+	code = code.replace(/(&gt;)/ig,'$1<br>');
+	code = code.replace(/(<br><br>)/ig,'<br>');
+	code = code.replace(/(\&lt\;[^\;]*;)/ig,'<font color=blue>$1</font>');
+	code = code.replace(/(\&lt\;img\s+[^\;]*;)/ig,'<font color=00ffff style=\'background:#000000\'>$1</font>');
+	code = code.replace(/(\&lt\;a\s+[^\;]*;)/ig,'<font color=#ff0000>$1</font>');
+	code = code.replace(/(\&lt\;\/a[^\;]*;)/ig,'<font color=#ff0000>$1</font>');
+	code = code.replace(/(\"[^\"]*\")/ig,'<font color=#ff00ff>$1</font>');
+	code = code.replace(/(\&lt\;hr[^\;]*;)/ig,'<font color=#ff0000>$1</font>');
+	code = code.replace(/(\&lt\;ul[^\;]*;)/ig,'<font color=#ff0000>$1</font>');
+	code = code.replace(/(\&lt\;\/ul[^\;]*;)/ig,'<font color=#ff0000>$1</font>');
+	code = code.replace(/(\&lt\;ol[^\;]*;)/ig,'<font color=#ff0000>$1</font>');
+	code = code.replace(/(\&lt\;\/ol[^\;]*;)/ig,'<font color=#ff0000>$1</font>');
+	code = code.replace(/(\&lt\;li[^\;]*;)/ig,'<font color=#777777>$1</font>');
+	code = code.replace(/(\&lt\;\/li[^\;]*;)/ig,'<font color=#777777>$1</font>');
+	return code;
+}
+
+
+function getElem(sTag,start)
+{
+	while ((start != null) && (start.tagName != sTag)) 
+	{
+		start = start.parentElement;
+	}
+	return start;
+}
+
+function getChild(sTag, node)
+{
+	while ((node != null) && (node.tagName != sTag)) 
+	{
+		childnodes = node.childNodes[0];
+		node = childnodes[0];
+	}
+	return node;
+}
+
+function Dodelete()
+{
+targetDoc.execCommand('Delete');
+target.focus();
+}
+
+function do_exec_format(sCommand,sArgs){
+
+	if(sCommand=='forecolor'){
+		document.form1.select2.selectedIndex=0;
+	}
+	if(sCommand=='FontName'){
+		document.form1.select3.selectedIndex=0;
+	}
+	target.document.execCommand(sCommand,'',sArgs);
+}
+
+function onHyperLink()
+{
+	var DoA = getElem("A",target.document.selection.createRange().parentElement());
+	var str = prompt("请输入超链接地址):", DoA ? DoA.href : "http:\/\/");
+
+	if ((str != null) && (str != "http://"))
+	{
+		//str = str + " target=_blank ";
+		if (target.document.selection.type == "None")
+		{
+			var sel = target.document.selection.createRange();
+			try
+			{
+				if (sel.parentElement()==document.body)
+				{
+					target.focus();
+					sel = target.document.selection.createRange();
+				}
+			}
+			catch(e)
+			{}
+			sel.pasteHTML("<A HREF=\""+str+"\">"+str+"</A> ");
+			sel.select();
+		}
+		else
+		{
+			target.document.execCommand('CreateLink','',str);
+			//target.document.selection.createRange().parentElement.setAttribute("target", "_blank"); 
+		}
+	}
+	else 
+	{
+		target.focus();
+	}
+}
+
+
+var node;
+var sel;
+var selType;
+function onImage()
+{
+	sel = target.document.selection.createRange();
+	selType = target.document.selection.type;
+	node = (selType == "Control")?sel(0):sel.parentElement();
+
+	if (node==document.body)
+	{
+		target.focus();
+		sel = target.document.selection.createRange();
+		selType = target.document.selection.type;
+		node = (selType == "Control")?sel(0):sel.parentElement();
+	}
+
+	var div = document.createElement("DIV");
+	div.id = "iimg";
+	div.style.position = "absolute";
+	div.style.top = document.body.offsetTop+250;
+	div.style.width = "300px";
+	div.style.height = "200px";
+	div.style.left = document.body.offsetLeft+document.body.offsetWidth/2-150;
+	div.style.border = "3px outset #eeeeee";
+	div.style.background = "#f0f0f0";
+
+	var DoA = getElem("IMG",node);
+
+	var input1 = document.createElement("input");
+	input1.type = "text";
+	input1.id = "imgurl";
+	input1.value = DoA!=null ? DoA.src : "";
+
+	var input2 = document.createElement("input");
+	input2.type = "text";
+	input2.id = "imgalt";
+	input2.value = DoA!=null ? DoA.alt : "";
+	
+	var input3 = document.createElement("input");
+	input3.type = "text";
+	input3.id = "imgalign";
+	input3.value = DoA!=null ? DoA.align : "";
+
+	var blank1 = document.createElement("div");
+	blank1.style.height = "10px";
+	blank1.style.width = "100%";
+	blank1.innerHTML = "<img width=0 height=10>";
+	
+	var blank2 = document.createElement("div");
+	blank2.style.height = "10px";
+	blank2.style.width = "100%";
+	blank2.innerHTML = "<img width=0 height=10>";
+	
+	var blank3 = document.createElement("div");
+	blank3.style.height = "10px";
+	blank3.style.width = "100%";
+	blank3.innerHTML = "<img width=0 height=10>";
+	
+	var blank4 = document.createElement("div");
+	blank4.style.height = "10px";
+	blank4.style.width = "100%";
+	blank4.innerHTML = "<img width=0 height=10>";
+
+	var submit1 = document.createElement("input");
+	submit1.type = "button";
+	submit1.value = "确 定";
+	submit1.onclick = new Function("chimg()");
+
+	var inputdiv1 = document.createElement("div");
+	inputdiv1.style.width="100%";
+	inputdiv1.innerHTML = "&nbsp;图片地址：";
+	inputdiv1.appendChild(input1);
+
+	var inputdiv2 = document.createElement("div");
+	inputdiv2.style.width="100%";
+	inputdiv2.innerHTML = "&nbsp;图片文本：";
+	inputdiv2.appendChild(input2);
+
+	var inputdiv3 = document.createElement("div");
+	inputdiv3.style.width="100%";
+	inputdiv3.innerHTML = "&nbsp;对齐方式：";
+	inputdiv3.appendChild(input3);
+
+	div.appendChild(blank1);
+	div.appendChild(inputdiv1);
+	div.appendChild(blank2);
+	div.appendChild(inputdiv2);
+	div.appendChild(blank3);
+	div.appendChild(inputdiv3);
+	div.appendChild(blank4);
+	div.appendChild(submit1);
+
+	document.body.appendChild(div);
+	document.getElementById("imgurl").focus();
+}
+
+function chimg()
+{
+	var str1 = document.getElementById("imgurl").value;
+	var str2 = document.getElementById("imgalt").value;
+	var str3 = document.getElementById("imgalign").value;
+
+	if ((str1 != null) && (str1 != ""))
+	{
+		if (selType == "Control")
+		{
+			node.src = str1;
+			node.alt = str2;
+			node.align = str3;
+		}
+		else
+		{
+			sel.pasteHTML("<center><img src=\""+str1+"\" border=0 alt=\""+str2+"\" align=\""+str3+"\"><br>"+str2+"</center>");
+			sel.select();
+		}
+	}
+	else 
+	{
+		target.focus();
+	}
+	document.body.removeChild(document.getElementById("iimg"));
+}
+
+function openme(obj)
+{ 
+	obj.style.background="#CCCCCC";
+}
+function closeme(obj)
+{
+	obj.style.background="";
+} 
+
+function pasteAll()
+{
+	var data = clipboardData.getData("Text");
+	if (data.indexOf("[^^]\n")>-1)
+	{
+		var datalit = data.split("[^^]\n");
+		var i=0;
+		var title = datalit[i++];
+		var stitle = datalit[i++];
+		var topicids1 = datalit[i++];
+		var topicids = datalit[i++];
+		var source = datalit[i++];
+		var dkeys = datalit[i++];
+		var relatespkey = datalit[i++];
+		var relatekey = datalit[i++];
+		var content = datalit[i++];
+		var lspri = datalit[i++];
+		var digest = datalit[i++];
+		var imgsrc = datalit[i++];
+		document.form1.title.value=title;
+		document.form1.stitle.value=stitle;
+		document.form1.topicids1.value=topicids1;
+		document.form1.topicids.value=topicids;
+		document.form1.source.value=source;
+		document.form1.dkeys.value=dkeys;
+		document.form1.relatespkey.value=relatespkey;
+		document.form1.relatekey.value=relatekey;
+		target.document.body.innerHTML=content;
+		document.form1.lspri.value=lspri;
+		document.form1.digest.value=digest;
+		document.form1.imgsrc.value=imgsrc;
+	}
+}
+
+function copyAll()
+{
+	try
+	{
+		var copytext="";
+		copytext+=form1.title.value+"[^^]\n";
+		copytext+=form1.stitle.value+"[^^]\n";
+		copytext+=form1.topicids1.value+"[^^]\n";
+		copytext+=form1.topicids.value+"[^^]\n";
+		copytext+=form1.source.value+"[^^]\n";
+		copytext+=form1.dkeys.value+"[^^]\n";
+		copytext+=form1.relatespkey.value+"[^^]\n";
+		copytext+=form1.relatekey.value+"[^^]\n";
+		copytext+=target.document.body.innerHTML+"[^^]\n";
+		copytext+=form1.lspri.value+"[^^]\n";
+		copytext+=form1.digest.value+"[^^]\n";
+		copytext+=form1.imgsrc.value+"[^^]\n";
+		copyText(copytext);
+	}
+	catch(e)
+	{}
+}
+
+function publish()
+{
+	var uploadhtml = "";
+	if (target.document.body.style.background=="#dddddd")
+	{
+		uploadhtml=target.document.body.innerText;
+	}
+	else
+	{
+		uploadhtml=target.document.body.innerHTML;
+	}
+	uploadhtml = uploadhtml.replace(/<div[^>]*>/ig, "");
+	uploadhtml = uploadhtml.replace(/<\/div[^>]*>/ig, "");
+	uploadhtml = uploadhtml.replace(/<a.*?href="([^"]*)"[^>]*>/ig,"<a href=\"$1\" target=\"_blank\">");
+	form1.content.value = uploadhtml;
+	try
+	{
+		if (form1.copybody.checked)
+		{
+			copyAll();
+		}
+	}
+	catch(e)
+	{}
+	form1.submit();
+}
+
+function split()
+{
+	target.focus();
+
+	sel = target.document.selection.createRange();
+	selType = target.document.selection.type;
+	var addtitle = false;
+	try
+	{
+		if (selType == "Control")
+		{
+			node = sel(0);
+			addtitle = true;
+		}
+		else
+		if (sel.parentElement().tagName=="HR")
+		{
+			node = sel.parentElement();
+			addtitle = true;
+		}
+		else
+		{
+			node = sel.parentElement();
+		}
+	}
+	catch(e)
+	{
+		node = sel.parentElement();
+	}
+	if (!addtitle)
+	{
+		sel.pasteHTML("<HR color=#ff0123>");
+		sel.select();
+	}
+	else
+	{
+		var nodeid = prompt("请输入分页标题):", node ? node.id : "");
+		node = getChild("HR",node);
+		node.id = "\""+nodeid+"\"";		
+	}
+}
+
+function format()
+{
+	try
+	{
+		var content = target.document.body.innerHTML.replace(/\n/ig, "");
+		//杀死js
+		content = content.replace(/<script.*?>.*?<\/scrip[^>]*>/ig,"");
+		content = content.replace(/<.*?javascript:[^>]*>/ig,"");
+
+		//杀死style
+		content = content.replace(/<style.*?>.*?<\/styl[^>]*>/ig,"");
+
+		//清理多余html
+		content = content.replace(/<table[^>]*>/ig,'');
+		content = content.replace(/<tbody[^>]*>/ig,'');
+		content = content.replace(/<tr[^>]*>/ig,'');
+		content = content.replace(/<td[^>]*>/ig,'');
+		content = content.replace(/<font[^>]*>/ig,'');
+		content = content.replace(/<span[^>]*>/ig,'');
+		content = content.replace(/<div[^>]*>/ig,'<br>');
+		content = content.replace(/<h2[^>]*>/ig,'');
+		content = content.replace(/<h3[^>]*>/ig,'');
+		content = content.replace(/<code[^>]*>/ig,'<br>');
+		content = content.replace(/<center[^>]*>/ig,'');
+		content = content.replace(/<th[^>]*>/ig,'');
+		content = content.replace(/<sohu[^>]*>/ig,'');
+		content = content.replace(/<form[^>]*>/ig,'');
+		content = content.replace(/<input[^>]*>/ig,'');
+		content = content.replace(/<select[^>]*>/ig,'');
+		content = content.replace(/<textarea[^>]*>/ig,'');
+
+		content = content.replace(/<\/table>/ig,'');
+		content = content.replace(/<\/tbody>/ig,'');
+		content = content.replace(/<\/tr>/ig,'');
+		content = content.replace(/<\/td>/ig,'');
+		content = content.replace(/<\/font>/ig,'');
+		content = content.replace(/<\/span>/ig,'');
+		content = content.replace(/<\/div>/ig,'<br>');
+		content = content.replace(/<\/h2>/ig,'');
+		content = content.replace(/<\/h3>/ig,'');
+		content = content.replace(/<\/code>/ig,'<br>');
+		content = content.replace(/<\/center>/ig,'');
+		content = content.replace(/<\/th>/ig,'');
+		content = content.replace(/<\/sohu[^>]*>/ig,'');
+		content = content.replace(/<\/form[^>]*>/ig,'');
+		content = content.replace(/<\/input[^>]*>/ig,'');
+		content = content.replace(/<\/select[^>]*>/ig,'');
+		content = content.replace(/<\/textarea[^>]*>/ig,'');
+		
+		content = content.replace(/<\?xml[^>]*>/ig,'');
+		content = content.replace(/<\!--.*?-->/ig,'');
+		//content = content.replace(//ig,'');
+		//content = content.replace(//ig,'');
+		//content = content.replace(//ig,'');
+		
+		//处理图片
+		content = content.replace(/<img.*?src=([^ |>]*)[^>]*>/ig,"<img src=$1 border=0>");
+		content = content.replace(/(<img[^>]*>)/ig , "<center>$1<\/center>");
+
+		//去掉链接中的无用参数
+		content = content.replace(/<a.*?href="([^"]*)"[^>]*>/ig,"<a href=\"$1\">");
+
+		//去掉iframe
+		content = content.replace(/<iframe[^>]*>/ig,"");
+		content = content.replace(/<\/iframe[^>]*>/ig,"");
+
+		//格式文本
+		content = "MM163brMM" + content;
+		content = content.replace(/<br>\s*<br>/ig, 'MM163brMM');
+		content = content.replace(/<center>\s*<center>/ig, '<center>');
+		content = content.replace(/<\/center>\s*<\/center>/ig, '</center>');
+		content = content.replace(/<center>/ig, 'MM163brMM<center>');
+		content = content.replace(/<\/center>/ig, '</center>MM163brMM');
+		content = content.replace(/<br>/ig, 'MM163brMM');
+		content = content.replace(/<p[^>]*>/ig, 'MM163brMM');
+		content = content.replace(/<\/p[^>]*>/ig, '');
+		content = content.replace(/&nbsp;/ig, '');
+		content = content.replace(/　/ig, '');
+		content = content.replace(/\r/ig, '');
+		content = content.replace(/\n/ig, '');
+		content = content.replace(/MM163brMM\s*MM163brMM/ig,'MM163brMM');
+		content = content.replace(/MM163brMM/ig,'</P><P style="TEXT-INDENT: 2em">');
+		content = content.replace("</P>","");
+
+		target.document.body.innerHTML = content;
+	}
+	catch(e)
+	{}
+}
+
+function cutA()
+{
+	var content = target.document.body.innerHTML;
+	content = content.replace(/<a[^>]*>(.*?)<\/a>/ig, "$1");
+	target.document.body.innerHTML = content;
+}
+
+function showswf() { 
+ var c =  window.showModalDialog("/post/swf.jsp",window,'dialogWidth:550px;dialogHeight:300px;status:no;scroll:no;help:no;');
+ if(c)
+ target.document.body.innerHTML = target.document.body.innerHTML + c;
+}
+function showrm() { 
+ var c =  window.showModalDialog("/post/rm.jsp",window,'dialogWidth:550px;dialogHeight:300px;status:no;scroll:no;help:no;');
+ if(c)
+ target.document.body.innerHTML = target.document.body.innerHTML + c;
+}
+function showwmv() { 
+ var c =  window.showModalDialog("/post/wmv.jsp",window,'dialogWidth:550px;dialogHeight:300px;status:no;scroll:no;help:no;');
+if(c)
+ target.document.body.innerHTML = target.document.body.innerHTML + c;
+}

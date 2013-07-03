@@ -5,10 +5,13 @@ import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
+import java.util.TreeSet;
+
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
 import org.apache.log4j.Logger;
+import org.json.JSONArray;
 import org.json.JSONObject;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.MediaType;
@@ -55,7 +58,8 @@ public class Action {
 		// WEB中获得SPRING容器
 		WebApplicationContext wac = WebApplicationContextUtils
 				.getRequiredWebApplicationContext(req.getServletContext());
-		String s= new JSONObject(wac.getBean(Teacher.class)).toString()+System.getProperty("webName.root");
+		String s = new JSONObject(wac.getBean(Teacher.class)).toString()
+				+ System.getProperty("webName.root");
 		logger.info(s);
 		return s;
 	}
@@ -66,5 +70,6 @@ public class Action {
 			HttpServletRequest req, String ex) throws IOException {
 		return new JSONObject(req.getParameterMap()).toString();
 	}
+
 
 }

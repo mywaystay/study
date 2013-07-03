@@ -1,0 +1,80 @@
+var openpic="/images/open.jgif";
+var closepic="/images/close.jgif";
+var filepic="/images/file.jgif";
+
+///////////////////////多级菜单关合///////////////////////////
+function expandit(obj0,obj1){
+	if(obj1.style.display=="none"){
+		obj1.style.display="inline";
+		obj0.all.tags('img')[0].src=openpic;
+		}
+	else{
+		obj1.style.display="none";
+		obj0.all.tags('img')[0].src=closepic;
+	}
+}
+///////////////////////多级菜单链接///////////////////////////
+var colorbak="";
+function go(obj,url){
+	eval(rumortargetframe).location=url;
+	allspan=rumormenu.all.tags('span');
+	for(i=0;i<allspan.length;i++){
+		allspan[i].style.backgroundColor=menubgcolor;
+		//allspan[i].style.color=menutxtcolor;
+		if (allspan[i].style.color==seltxtcolor)
+		{
+			allspan[i].style.color=colorbak;
+		}
+	}
+	colorbak = obj.style.color;
+	obj.style.backgroundColor =seltxtbgcolor;
+	obj.style.color=seltxtcolor;
+}
+///////////////////////多级菜单建立///////////////////////////
+function buildmenu(){
+var menuwant=0;
+var menunow=0;
+var folder=0;
+document.write("<table cellspacing=0 cellpadding=0 border=0 align=left width=100%><tr><td colspan=10 align=left><img width=1024 height=0></tD></tr><tr><td align=left>");
+document.write("<TABLE id='rumormenu' border=0 cellspacing=0 align=left cellpadding=0 style='line-height:20px'>");
+for(i=0;i<menu.length;i++){
+	if(menu[i]==null)continue;
+	menuwant=menu[i].split(",")[0];
+	while(menuwant!=menunow){
+		if(menuwant>menunow){
+			folder+=1;
+			document.write("<tr id='folder"+folder+"' style='display:none'><td align=left>&nbsp;</td><td align=left><TABLE border=0 cellspacing=0 cellpadding=0>");
+			menunow+=1;
+		}
+		if(menuwant<menunow){
+			document.write("</table></td></tr>");
+			menunow-=1;
+		}
+	};
+	var fontcolor="#000000";
+	if(menu[i+1]!=null&&menu[i+1].split(",")[0]>menunow){
+		document.write("<tr>");
+		document.write("<td onclick=expandit(this,folder"+(folder+1)+") align=left><img src="+closepic+"></td>");
+		}
+	else{
+		document.write("<tr>");
+		document.write("<td align=left><img src="+filepic+"></td>");
+		fontcolor="#107800";
+	}
+	if(menu[i].split(",")[2]!=null)
+		document.write("<td valign=bottom align=left><span style='cursor:hand;color:"+fontcolor+"' onclick=go(this,'"+menu[i].split(",")[2]+"')>");
+	else
+		document.write("<td valign=bottom align=left><span style='cursor:default;'>");
+		document.write(menu[i].split(",")[1]+"</span></td></tr>");
+}	
+document.write("</TABLE>");
+while(menuwant>0){
+	document.write("</td></tr></table></td></tr></table>");
+	menuwant-=1;
+};
+//go(rumormenu.all.tags('span')[0],menu[0].split(",")[2]);
+}
+/////////////////////执行部分////////////////////////////
+try{
+	buildmenu();
+}catch(e){}

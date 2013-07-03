@@ -1,3 +1,4 @@
+import java.util.TreeSet;
 
 import org.junit.Test;
 import org.junit.runner.RunWith;
@@ -14,7 +15,7 @@ public class SpringTest {
 
 	@Autowired
 	Student stu;
-	
+
 	@Autowired
 	Student stu2;
 
@@ -25,15 +26,16 @@ public class SpringTest {
 	Teacher tea2;
 
 	@Test
-	public void test1(){
+	public void test1() {
 		System.out.println(System.getenv("PATH"));
 		System.out.println(stu.getId());
 		System.out.println(stu.getName());
 		System.out.println(stu2.getId());
 		System.out.println(stu2.getName());
-		//因为是原型模式 所以两个tea的值不一样
+		// 因为是原型模式 所以两个tea的值不一样
 		System.out.println(tea.getId());
 		System.out.println(tea2.getId());
 	}
-	
+
+
 }

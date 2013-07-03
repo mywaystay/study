@@ -1,0 +1,11 @@
+document.write("<option value=''>不推送</option>");
+document.write("<option value=0 id='album_0'>g根目录</option>");
+document.write("<option value=1 id='album_1'>s--社会图片</option>");
+document.write("<option value=2 id='album_2'>g--国际图片</option>");
+document.write("<option value=5 id='album_5'>g--国内图片</option>");
+document.write("<option value=6 id='album_6'>j--军事图片</option>");
+document.write("<option value=7 id='album_7'>l--历史图片</option>");
+document.write("<option value=8 id='album_8'>j--教程图片</option>");
+document.write("<option value=10 id='album_10'>z--中国足球图片</option>");
+document.write("<option value=11 id='album_11'>l--旅游图片库</option>");
+document.write("<option value=12 id='album_12'>s--商业人物</option>");
