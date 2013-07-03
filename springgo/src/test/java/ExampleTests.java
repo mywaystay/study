@@ -68,5 +68,11 @@ public class ExampleTests {
 		mockMvc.perform((post("/spring/post.do").param("abc", "def")))
 				.andExpect(status().isOk()).andDo(print());
 	}
+	
+	@Test
+	public void getAccount2() throws Exception {
+		mockMvc.perform((get("/spring/pic.do")))
+				.andExpect(status().isOk()).andDo(print());
+	}
 
 }
